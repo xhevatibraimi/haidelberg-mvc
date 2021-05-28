@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
+using Microsoft.Net.Http.Headers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,34 +10,44 @@ namespace Haidelberg.Vehicles.WebApp.Controllers
 {
     public class ReturnTypesController : Controller
     {
-        [HttpGet("/learning/bad-request")]
-        public StatusCodeResult BadRequestAct()
+        [HttpGet("/learning/ok-object-result")]
+        public IActionResult Index()
         {
-            return base.BadRequest();
+            return new JsonResult(new List<object>
+            {
+                new
+                {
+                    FirstName = "xhevo",
+                    Age = 26
+                },
+                new
+                {
+                    FirstName = "enis",
+                    Age = 21
+                }
+            });
         }
 
-        [HttpGet("/learning/not-found")]
-        public StatusCodeResult NotFound()
+        [HttpGet("/learning/file-result")]
+        public IActionResult File()
         {
-            return base.NotFound();
+            var file = System.IO.File.ReadAllBytes("c:/files/img.png");
+            return new FileContentResult(file, "image/png");
         }
 
-        [HttpGet("/learning/redirect")]
-        public RedirectToActionResult Redirect()
+
+        [HttpGet("/learning/exception")]
+        public IActionResult FileNotFound()
         {
-            return base.RedirectToAction("NotFound");
+            var file = System.IO.File.ReadAllBytes("");
+            return new FileContentResult(file, "image/png");
         }
 
-        [HttpGet("/learning/unauthenticated")]
-        public StatusCodeResult UnAuthorized()
+        [HttpGet("/learning/not-implemented")]
+        public IActionResult NotImplemented()
         {
-            return base.Unauthorized();
-        }
-
-        [HttpGet("/learning/unauthorized")]
-        public ForbidResult Forbidden()
-        {
-            return base.Forbid();
+            return base.StatusCode(501);
+            throw new NotImplementedException();
         }
     }
 }
