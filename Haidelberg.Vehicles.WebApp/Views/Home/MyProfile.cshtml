@@ -5,43 +5,52 @@
     var i = 0;
 }
 @{
-var fruits = new List<string> { "bananna", "orange", "apple" };
+    var fruits = new List<string> { "bananna", "orange", "apple" };
 }
 <h1>This is a title</h1>
-<p>@postText</p>
-<p>post length: @postText.Length</p>
-<p>reversed text:</p>
-<p>@string.Join("", postText.Reverse())</p>
+@*<p>@postText</p>
+    <p>post length: @postText.Length</p>*@
+@*<p>reversed text:</p>
+    <p>@string.Join("", postText.Reverse())</p>*@
 @*<p>@(new List<string> { "bananna" })</p>*@
 
-@if (isAdmin)
-{
-    <ul>
-        @foreach (var fruit in fruits)
-        {
-            <li>@fruit</li>
-        }
-    </ul>
-}
-else
-{
-    <p>you cannot see the fruits because you are not an admin</p>
-}
+<p>@ReverseString(postText)</p>
 
-@switch (age)
-{
-    case 8:
-        <p>child</p>
-        break;
-    case 20:
-        <p>adult</p>
-        break;
-    default:
-        <p>unknown age</p>
-        break;
-}
+@*@if (isAdmin)
+    {
+        <ul>
+            @foreach (var fruit in fruits)
+            {
+                <li>@fruit</li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p>you cannot see the fruits because you are not an admin</p>
+    }*@
 
-@while (i < 30)
-{
-    <p>number @(i++)</p>
+@*@switch (age)
+    {
+        case 8:
+            <p>child</p>
+            break;
+        case 20:
+            <p>adult</p>
+            break;
+        default:
+            <p>unknown age</p>
+            break;
+    }*@
+
+@*@while (i < 30)
+    {
+        <p>number @(i++)</p>
+    }*@
+
+@{
+    string ReverseString(string str)
+    {
+        return string.Join("", str.Reverse());
+    }
 }
