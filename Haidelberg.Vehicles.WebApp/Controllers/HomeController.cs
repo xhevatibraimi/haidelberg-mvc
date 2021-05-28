@@ -20,5 +20,18 @@ namespace Haidelberg.Vehicles.WebApp.Controllers
         {
             return View();
         }
+
+        [HttpGet("/profile")]
+        public IActionResult MyProfile()
+        {
+            //GET query route header
+            //POST query route header body
+            //PUT query route header body
+            //DELETE query route header
+            //PATCH query route header body
+
+            // do some logic
+            return View();
+        }
     }
 }
