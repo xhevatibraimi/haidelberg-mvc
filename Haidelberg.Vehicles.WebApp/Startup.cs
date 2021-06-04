@@ -21,7 +21,7 @@ namespace Haidelberg.Vehicles.WebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<DatebaseContext>(options => options.UseSqlServer(""));
+            services.AddDbContext<DatabaseContext>(options => options.UseSqlServer("Data Source=(LocalDb)\\MSSQLLocalDB;Initial Catalog=VehiclesTestDB3;Integrated Security=True;"));
             services.AddControllersWithViews();
         }
 

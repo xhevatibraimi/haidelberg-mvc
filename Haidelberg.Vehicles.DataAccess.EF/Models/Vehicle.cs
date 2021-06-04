@@ -16,7 +16,7 @@ namespace Haidelberg.Vehicles.DataAccess.EF
         [ForeignKey("CategoryId")]
         public virtual Category Category { get; set; }
 
-        public virtual ICollection<VehicleEmployee> VehicleEmployees { get; set; }
+        //public virtual ICollection<VehicleEmployee> VehicleEmployees { get; set; }
 
     }
 }

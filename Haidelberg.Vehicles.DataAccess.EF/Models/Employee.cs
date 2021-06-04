@@ -23,6 +23,6 @@ namespace Haidelberg.Vehicles.DataAccess.EF
         public virtual Branch Branch { get; set; }
 
         public virtual ICollection<Expense> Expenses { get; set; }
-        public virtual ICollection<VehicleEmployee> VehicleEmployees { get; set; }
+        //public virtual ICollection<VehicleEmployee> VehicleEmployees { get; set; }
     }
 }
