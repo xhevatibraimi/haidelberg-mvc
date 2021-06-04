@@ -1,0 +1,19 @@
+﻿@model List<Haidelberg.Vehicles.DataAccess.EF.Category>
+
+<a href="/Category/Create" class="btn btn-success">Create</a>
+
+<ul>
+    @foreach (var category in Model)
+    {
+        <li>#@category.Id - @category.Name</li>
+    }
+</ul>
+
+@*<br />
+    ViewBag:
+    @ViewBag.Categories
+    <br />
+    ViewData:
+    @ViewData["Categories"]*@
+
+
