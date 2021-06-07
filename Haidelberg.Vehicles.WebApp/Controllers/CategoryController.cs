@@ -79,6 +79,33 @@ namespace Haidelberg.Vehicles.WebApp.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var dbCategory = _context.Categories.FirstOrDefault(x => x.Id == id);
+            if (dbCategory == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            return View(dbCategory);
+        }
+        
+        [HttpPost]
+        public IActionResult Edit(int id, Category category)
+        {
+            var dbCategory = _context.Categories.FirstOrDefault(x => x.Id == id);
+            if (dbCategory == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            dbCategory.Name = category.Name;
+            _context.SaveChanges();
+
+            return RedirectToAction("Details", new { Id = id });
+        }
+
         //public IActionResult Redirect()
         //{
         //    ViewBag.Text = TempData["Text"];

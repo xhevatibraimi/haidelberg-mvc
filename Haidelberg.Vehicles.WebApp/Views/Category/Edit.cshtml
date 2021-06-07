@@ -1,0 +1,9 @@
+﻿@model Haidelberg.Vehicles.DataAccess.EF.Category
+
+<form action="/category/edit/@Model.Id" method="post">
+    <div class="form-group">
+        <label>Category Name: </label>
+        <input type="text" name="Name" value="@Model.Name" />
+    </div>
+    <input class="btn btn-success" type="submit" value="Save Changes" />
+</form>
