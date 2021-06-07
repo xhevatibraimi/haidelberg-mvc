@@ -34,7 +34,7 @@ namespace Haidelberg.Vehicles.WebApp.Controllers
         {
             if (!(ModelState.IsValid && _context.Categories.Any(x => x.Id == vehicle.CategoryId)))
             {
-                ViewBag.ErrorMessage = ModelState.FirstOrDefault(x => x.Value.Errors.Any()).Value.Errors.FirstOrDefault().ErrorMessage;
+                ViewBag.ErrorMessage = ModelState.FirstOrDefault(x => x.Value.Errors.Any()).Value?.Errors?.FirstOrDefault()?.ErrorMessage;
                 ViewBag.Categories = _context.Categories.ToList();
                 return View(vehicle);
             }
