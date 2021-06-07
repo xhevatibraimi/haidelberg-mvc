@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Haidelberg.Vehicles.DataAccess.EF
@@ -7,6 +6,8 @@ namespace Haidelberg.Vehicles.DataAccess.EF
     public class Vehicle
     {
         public int Id { get; set; }
+        //[Required(ErrorMessage = "Production Year is a required field!")]
+        //[Display(Name = "Production Year")]
         public int ProductionYear { get; set; }
         public DateTime LastRegistrationDate { get; set; }
         public string Model { get; set; }
