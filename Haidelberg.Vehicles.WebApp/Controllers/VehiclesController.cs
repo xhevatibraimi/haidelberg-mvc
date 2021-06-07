@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Haidelberg.Vehicles.DataAccess.EF;
+using System.Linq;
 
 namespace Haidelberg.Vehicles.WebApp.Controllers
 {
@@ -12,6 +13,10 @@ namespace Haidelberg.Vehicles.WebApp.Controllers
             _context = context;
         }
 
-
+        public IActionResult Create()
+        {
+            ViewBag.Categories = _context.Categories.ToList();
+            return View();
+        } 
     }
 }
