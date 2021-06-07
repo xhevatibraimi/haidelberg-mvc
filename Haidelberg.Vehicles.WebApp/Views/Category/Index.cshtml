@@ -2,12 +2,38 @@
 
 <a href="/Category/Create" class="btn btn-success">Create</a>
 
-<ul>
-    @foreach (var category in Model)
-    {
-        <li>#@category.Id - @category.Name</li>
-    }
-</ul>
+@*<ul>
+        @foreach (var category in Model)
+        {
+            <li>#@category.Id - @category.Name <a class="btn btn-danger" href="/category/delete/@category.Id">Delete</a></li>
+        }
+    </ul>*@
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Category Name</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var category in Model)
+        {
+            <tr>
+                <td>@category.Id</td>
+                <td>@category.Name</td>
+                <td>
+                    <a class="btn btn-info" href="/category/details/@category.Id">Details</a>
+                    <a class="btn btn-warning" href="/category/edit/@category.Id">Edit</a>
+                    <a class="btn btn-danger" href="/category/delete/@category.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tfoot></tfoot>
+
+</table>
 
 @*<br />
     ViewBag:
