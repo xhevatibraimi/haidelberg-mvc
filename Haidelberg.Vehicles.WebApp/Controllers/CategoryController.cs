@@ -16,6 +16,7 @@ namespace Haidelberg.Vehicles.WebApp.Controllers
             _context = context;
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
             var categories = _context.Categories.ToList();
@@ -41,6 +42,7 @@ namespace Haidelberg.Vehicles.WebApp.Controllers
         }
 
         // /Category/Details/123
+        [HttpGet]
         public IActionResult Details(int id)
         {
             var model = _context.Categories.FirstOrDefault(x => x.Id == id);
@@ -50,6 +52,31 @@ namespace Haidelberg.Vehicles.WebApp.Controllers
             }
 
             return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            var dbCategory = _context.Categories.FirstOrDefault(x => x.Id == id);
+            if (dbCategory == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            return View(dbCategory);
+        }
+
+        [HttpPost]
+        public IActionResult Delete(int id, Category c)
+        {
+            var dbCategory = _context.Categories.FirstOrDefault(x => x.Id == id);
+            if (dbCategory != null)
+            {
+                _context.Categories.Remove(dbCategory);
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("Index");
         }
 
         //public IActionResult Redirect()
