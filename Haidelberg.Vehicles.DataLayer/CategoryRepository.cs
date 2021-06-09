@@ -25,5 +25,37 @@ namespace Haidelberg.Vehicles.DataLayer
             var categories = _context.Categories.ToList();
             return categories;
         }
+
+        public Category GetCategoryById(int id)
+        {
+            var category = _context.Categories.FirstOrDefault(x => x.Id == id);
+            return category;
+        }
+
+        public void DeleteCategory(int id)
+        {
+            var category = _context.Categories.FirstOrDefault(x => x.Id == id);
+            if (category != null)
+            {
+                _context.Categories.Remove(category);
+                _context.SaveChanges();
+            }
+        }
+
+        public bool CategoryExists(int id)
+        {
+            var category = _context.Categories.FirstOrDefault(x => x.Id == id);
+            return category != null;
+        }
+
+        public void Edit(Category category)
+        {
+            var dbCategory = _context.Categories.FirstOrDefault(x => x.Id == category.Id);
+            if (dbCategory != null)
+            {
+                dbCategory.Name = category.Name;
+                _context.SaveChanges();
+            }
+        }
     }
 }

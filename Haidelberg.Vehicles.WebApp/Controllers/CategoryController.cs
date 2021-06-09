@@ -10,13 +10,11 @@ namespace Haidelberg.Vehicles.WebApp.Controllers
 {
     public class CategoryController : Controller
     {
-        private readonly DatabaseContext _context;
         private readonly CategoryRepository _categoryRepository;
 
-        public CategoryController(DatabaseContext context, CategoryRepository categoryRepository)
+        public CategoryController(CategoryRepository categoryRepository)
         {
-            _context = context;
-            _categoryRepository = _categoryRepository;
+            _categoryRepository = categoryRepository;
         }
 
         [HttpGet]
@@ -43,70 +41,61 @@ namespace Haidelberg.Vehicles.WebApp.Controllers
             return RedirectToAction("Details", new { Id = model.Id });
         }
 
-        // /Category/Details/123
-        //[HttpGet]
-        //public IActionResult Details(int id)
-        //{
-        //    var model = _context.Categories.FirstOrDefault(x => x.Id == id);
-        //    if (model == null)
-        //    {
-        //        return RedirectToAction("Index");
-        //    }
+        [HttpGet]
+        public IActionResult Details(int id)
+        {
+            var dbCategory = _categoryRepository.GetCategoryById(id);
+            if (dbCategory == null)
+            {
+                return RedirectToAction("Index");
+            }
 
-        //    return View(model);
-        //}
+            return View(dbCategory);
+        }
 
-        //[HttpGet]
-        //public IActionResult Delete(int id)
-        //{
-        //    var dbCategory = _context.Categories.FirstOrDefault(x => x.Id == id);
-        //    if (dbCategory == null)
-        //    {
-        //        return RedirectToAction("Index");
-        //    }
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            var dbCategory = _categoryRepository.GetCategoryById(id);
+            if (dbCategory == null)
+            {
+                return RedirectToAction("Index");
+            }
 
-        //    return View(dbCategory);
-        //}
+            return View(dbCategory);
+        }
 
-        //[HttpPost]
-        //public IActionResult Delete(int id, Category c)
-        //{
-        //    var dbCategory = _context.Categories.FirstOrDefault(x => x.Id == id);
-        //    if (dbCategory != null)
-        //    {
-        //        _context.Categories.Remove(dbCategory);
-        //        _context.SaveChanges();
-        //    }
+        [HttpPost]
+        public IActionResult Delete(int id, Category c)
+        {
+            _categoryRepository.DeleteCategory(id);
+            return RedirectToAction("Index");
+        }
 
-        //    return RedirectToAction("Index");
-        //}
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var dbCategory = _categoryRepository.GetCategoryById(id);
+            if (dbCategory == null)
+            {
+                return RedirectToAction("Index");
+            }
 
-        //[HttpGet]
-        //public IActionResult Edit(int id)
-        //{
-        //    var dbCategory = _context.Categories.FirstOrDefault(x => x.Id == id);
-        //    if (dbCategory == null)
-        //    {
-        //        return RedirectToAction("Index");
-        //    }
+            return View(dbCategory);
+        }
 
-        //    return View(dbCategory);
-        //}
-        
-        //[HttpPost]
-        //public IActionResult Edit(int id, Category category)
-        //{
-        //    var dbCategory = _context.Categories.FirstOrDefault(x => x.Id == id);
-        //    if (dbCategory == null)
-        //    {
-        //        return RedirectToAction("Index");
-        //    }
+        [HttpPost]
+        public IActionResult Edit(int id, Category category)
+        {
+            if (!_categoryRepository.CategoryExists(id))
+            {
+                return RedirectToAction("Index");
+            }
 
-        //    dbCategory.Name = category.Name;
-        //    _context.SaveChanges();
-
-        //    return RedirectToAction("Details", new { Id = id });
-        //}
+            _categoryRepository.Edit(category);
+            
+            return RedirectToAction("Details", new { Id = id });
+        }
 
         ////public IActionResult Redirect()
         //{
