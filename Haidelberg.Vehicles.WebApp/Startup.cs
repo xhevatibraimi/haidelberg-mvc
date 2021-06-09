@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Haidelberg.Vehicles.DataAccess.EF;
+using Haidelberg.Vehicles.DataLayer;
 
 namespace Haidelberg.Vehicles.WebApp
 {
@@ -19,6 +20,7 @@ namespace Haidelberg.Vehicles.WebApp
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<CategoryRepository>();
             services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(Configuration["ConnectionString"]));
             services.AddControllersWithViews();
         }
