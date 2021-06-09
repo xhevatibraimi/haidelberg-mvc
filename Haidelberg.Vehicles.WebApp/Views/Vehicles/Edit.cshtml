@@ -1,11 +1,19 @@
 ﻿@model Haidelberg.Vehicles.DataAccess.EF.Vehicle
 
-<form action="/vehicles/create" method="post">
+@{
+    ViewData["Title"] = "Edit";
+}
 
-    @if (ViewBag.ErrorMessage != null)
+<form action="/vehicles/edit/@Model.Id" method="post">
+
+    @if (ViewBag.ErrorMessages != null)
     {
         <div class="form-group">
-            <span class="text-danger">@ViewBag.ErrorMessage</span>
+            @foreach (var errorMessage in ViewBag.ErrorMessages)
+            {
+                <span class="text-danger">@errorMessage</span>
+                <br />
+            }
         </div>
     }
 
@@ -46,5 +54,5 @@
         </select>
     </div>
 
-    <input class="btn btn-success" type="submit" value="Create" />
+    <input class="btn btn-success" type="submit" value="Submit Changes" />
 </form>

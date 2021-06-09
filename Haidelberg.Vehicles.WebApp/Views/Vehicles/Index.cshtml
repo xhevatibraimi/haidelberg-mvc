@@ -7,7 +7,7 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="btn btn-success" href="/vehicles/create">Create New</a>
 </p>
 <table class="table">
     <thead>
@@ -25,7 +25,7 @@
         {
             <tr>
                 <td>@item.ProductionYear</td>
-                <td>@item.LastRegistrationDate</td>
+                <td>@item.LastRegistrationDate.ToString("yyyy MMMM dd")</td>
                 <td>@item.Model</td>
                 <td>@item.LicencePlate</td>
                 <td>@item.Category.Name</td>
