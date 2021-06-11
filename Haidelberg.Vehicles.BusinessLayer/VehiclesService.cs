@@ -9,13 +9,11 @@ namespace Haidelberg.Vehicles.BusinessLayer
 {
     public class VehiclesService : VehicleRepository
     {
-        private readonly VehicleRepository _vehicleRepository;
         private readonly CategoryRepository _categoryRepository;
 
-        public VehiclesService(VehicleRepository vehicleRepository, CategoryRepository categoryRepository, DatabaseContext context)
+        public VehiclesService(CategoryRepository categoryRepository, DatabaseContext context)
             : base(context)
         {
-            _vehicleRepository = vehicleRepository;
             _categoryRepository = categoryRepository;
         }
 

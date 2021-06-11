@@ -38,7 +38,7 @@ namespace Haidelberg.Vehicles.WebApp.Controllers
         public IActionResult Create(Category model)
         {
             _categoryRepository.CreateCategory(model);
-            return RedirectToAction("Details", new { Id = model.Id });
+            return RedirectToAction("Details", new { model.Id });
         }
 
         [HttpGet]

@@ -48,7 +48,7 @@ namespace Haidelberg.Vehicles.WebApp.Controllers
                 return View(vehicle);
             }
 
-            return RedirectToAction("Details");
+            return RedirectToAction("Details", new { vehicle.Id });
         }
 
         [HttpGet]
@@ -101,31 +101,31 @@ namespace Haidelberg.Vehicles.WebApp.Controllers
                 return View(vehicle);
             }
 
-            return RedirectToAction("Details", new { Id = vehicle.Id });
+            return RedirectToAction("Details", new { vehicle.Id });
         }
 
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            var dbVehicle = _vehicleRepository.GetById(id);
-            if (dbVehicle == null)
+            var vehicle = _vehiclesService.GetVehicleWithCategory(id);
+            if (vehicle == null)
             {
                 return RedirectToAction("Index");
             }
 
-            return View(dbVehicle);
+            return View(vehicle);
         }
 
         [HttpPost]
         public IActionResult Delete(int id, Vehicle vehicle)
         {
-            var dbVehicle = _vehicleRepository.GetById(id);
-            if (dbVehicle == null)
+            var vehicleExists = _vehiclesService.VehicleExists(id);
+            if (!vehicleExists)
             {
                 return RedirectToAction("Index");
             }
 
-            _vehicleRepository.DeleteVehicle(id);
+            _vehiclesService.DeleteVehicle(id);
 
             return RedirectToAction("Index");
         }
