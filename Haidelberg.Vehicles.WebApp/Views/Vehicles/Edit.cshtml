@@ -5,7 +5,7 @@
 }
 
 <form action="/vehicles/edit/@Model.Id" method="post">
-
+    <input type="hidden" name="Id" value="@Model.Id" />
     @if (ViewBag.ErrorMessages != null)
     {
         <div class="form-group">

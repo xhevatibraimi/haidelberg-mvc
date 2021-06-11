@@ -21,6 +21,7 @@ namespace Haidelberg.Vehicles.WebApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<CategoryRepository>();
+            services.AddTransient<VehicleRepository>();
             services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(Configuration["ConnectionString"]));
             services.AddControllersWithViews();
         }
