@@ -1,4 +1,5 @@
 ﻿using Haidelberg.Vehicles.DataAccess.EF;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,14 +33,18 @@ namespace Haidelberg.Vehicles.DataLayer
             return category;
         }
 
-        public void DeleteCategory(int id)
+        public bool TryDeleteCategory(int id)
         {
-            var category = _context.Categories.FirstOrDefault(x => x.Id == id);
-            if (category != null)
+            var dbCategory = _context.Categories.Include(x => x.Vehicles).FirstOrDefault(x => x.Id == id);
+
+            if (dbCategory.Vehicles.Any())
             {
-                _context.Categories.Remove(category);
-                _context.SaveChanges();
+                return false;
             }
+
+            _context.Categories.Remove(dbCategory);
+            _context.SaveChanges();
+            return true;
         }
 
         public bool CategoryExists(int id)
