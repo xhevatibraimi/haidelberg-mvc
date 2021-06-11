@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Haidelberg.Vehicles.BusinessLayer\Haidelberg.Vehicles.BusinessLayer.csproj" />
     <ProjectReference Include="..\Haidelberg.Vehicles.DataAccess.EF\Haidelberg.Vehicles.DataAccess.EF.csproj" />
     <ProjectReference Include="..\Haidelberg.Vehicles.DataLayer\Haidelberg.Vehicles.DataLayer.csproj" />
   </ItemGroup>

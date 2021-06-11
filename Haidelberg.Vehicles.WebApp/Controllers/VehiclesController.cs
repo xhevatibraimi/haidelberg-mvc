@@ -2,53 +2,59 @@
 using Haidelberg.Vehicles.DataAccess.EF;
 using System.Linq;
 using Haidelberg.Vehicles.DataLayer;
+using Haidelberg.Vehicles.BusinessLayer;
+using System.Collections.Generic;
 
 namespace Haidelberg.Vehicles.WebApp.Controllers
 {
     public class VehiclesController : Controller
     {
-        private readonly VehicleRepository _vehicleRepository;
-        private readonly CategoryRepository _categoryRepository;
+        private readonly VehiclesService _vehiclesService;
 
-        public VehiclesController(VehicleRepository vehicleRepository, CategoryRepository categoryRepository)
+        public VehiclesController(VehiclesService vehiclesService)
         {
-            _vehicleRepository = vehicleRepository;
-            _categoryRepository = categoryRepository;
+            _vehiclesService = vehiclesService;
         }
 
         [HttpGet]
         public IActionResult Index()
         {
-            var vehicles = _vehicleRepository.GetAllVehicles();
+            var vehicles = _vehiclesService.GetAllVehiclesWithCategory();
             return View(vehicles);
         }
 
         [HttpGet]
         public IActionResult Create()
         {
-            ViewBag.Categories = _categoryRepository.GetAllCategories();
+            ViewBag.Categories = _vehiclesService.GetAllVehicleCategoriesForCreate();
             return View(new Vehicle { LastRegistrationDate = System.DateTime.UtcNow });
         }
 
         [HttpPost]
         public IActionResult Create(Vehicle vehicle)
         {
-            if (!(ModelState.IsValid && _categoryRepository.CategoryExists(vehicle.CategoryId)))
+            if (!ModelState.IsValid)
             {
                 ViewBag.ErrorMessage = ModelState.FirstOrDefault(x => x.Value.Errors.Any()).Value?.Errors?.FirstOrDefault()?.ErrorMessage;
-                ViewBag.Categories = _categoryRepository.GetAllCategories();
+                ViewBag.Categories = _vehiclesService.GetAllVehicleCategoriesForCreate();
                 return View(vehicle);
             }
 
-            _vehicleRepository.CreateVehicle(vehicle);
-            
+            var createResult = _vehiclesService.CreateVehicle(vehicle);
+            if (!createResult.IsSuccessfull)
+            {
+                ViewBag.ErrorMessage = createResult.ErrorMessage;
+                ViewBag.Categories = _vehiclesService.GetAllVehicleCategoriesForCreate();
+                return View(vehicle);
+            }
+
             return RedirectToAction("Details");
         }
 
         [HttpGet]
         public IActionResult Details(int id)
         {
-            var dbVehicle = _vehicleRepository.GetById(id);
+            var dbVehicle = _vehiclesService.GetVehicleWithCategory(id);
             if (dbVehicle == null)
             {
                 return RedirectToAction("Index");
@@ -60,33 +66,40 @@ namespace Haidelberg.Vehicles.WebApp.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            var dbVehicle = _vehicleRepository.GetById(id);
-            if (dbVehicle == null)
+            var vehicleExists = _vehiclesService.VehicleExists(id);
+            if (!vehicleExists)
             {
                 return RedirectToAction("Index");
             }
 
-            ViewBag.Categories = _categoryRepository.GetAllCategories();
-            return View(dbVehicle);
+            ViewBag.Categories = _vehiclesService.GetAllVehicleCategoriesForCreate();
+            var vehicle = _vehiclesService.GetVehicleWithCategory(id);
+            return View(vehicle);
         }
 
         [HttpPost]
         public IActionResult Edit(int id, Vehicle vehicle)
         {
-            var dbVehicle = _vehicleRepository.GetById(vehicle.Id);
-            if (dbVehicle == null)
+            var vehicleExists = _vehiclesService.VehicleExists(vehicle.Id);
+            if (!vehicleExists)
             {
                 return RedirectToAction("Index");
             }
 
-            if (!(ModelState.IsValid &&_categoryRepository.CategoryExists(vehicle.CategoryId)))
+            if (!ModelState.IsValid)
             {
                 ViewBag.ErrorMessages = ModelState.SelectMany(x => x.Value.Errors).Select(x => x.ErrorMessage).ToList();
-                ViewBag.Categories = _categoryRepository.GetAllCategories();
+                ViewBag.Categories = _vehiclesService.GetAllVehicleCategoriesForCreate();
                 return View(vehicle);
             }
 
-            _vehicleRepository.UpdateVehicle(vehicle);
+            var updateResult = _vehiclesService.UpdateVehicle(vehicle);
+            if (!updateResult.IsSuccessfull)
+            {
+                ViewBag.Categories = _vehiclesService.GetAllVehicleCategoriesForCreate();
+                ViewBag.ErrorMessages = new List<string> { updateResult.ErrorMessage };
+                return View(vehicle);
+            }
 
             return RedirectToAction("Details", new { Id = vehicle.Id });
         }
