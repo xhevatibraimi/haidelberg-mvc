@@ -1,5 +1,6 @@
 ﻿using Haidelberg.Vehicles.DataAccess.EF;
 using Haidelberg.Vehicles.DataLayer;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 
@@ -58,6 +59,42 @@ namespace Haidelberg.Vehicles.BusinessLayer
             serviceResult.Result = category;
             serviceResult.IsSuccessfull = true;
             return serviceResult;
+        }
+
+        public ServiceResult TryDeleteCategory(int id)
+        {
+            var result = new ServiceResult();
+            
+            var dbCategory = _context.Categories
+                .Include(x=>x.Vehicles)
+                .Include(x => x.Employees)
+                .FirstOrDefault(x => x.Id == id);
+            if(dbCategory == null)
+            {
+                result.AddError("Category not found");
+                return result;
+            }
+
+            if (dbCategory.Vehicles.Any())
+            {
+                result.AddError("Category cannot be deleted, because it is being used by a vehicle");
+                return result;
+            }
+
+            if (dbCategory.Employees.Any())
+            {
+                result.AddError("Category cannot be deleted, because it is being used by an employee");
+                return result;
+            }
+
+            result.IsSuccessfull = base.TryDeleteCategory(id);
+            if (!result.IsSuccessfull)
+            {
+                result.AddError("unable to find category");
+                return result;
+            }
+
+            return result;
         }
 
         public bool CategoryExists(string name)

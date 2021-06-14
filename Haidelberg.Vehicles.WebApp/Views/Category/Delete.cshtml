@@ -1,9 +1,13 @@
 ﻿@model Haidelberg.Vehicles.DataAccess.EF.Category
 
-@if (ViewBag.ErrorMessage != null)
+@if (ViewBag.Errors != null)
 {
     <div class="form-group">
-        <span class="text-danger">@ViewBag.ErrorMessage</span>
+        @foreach (var error in ViewBag.Errors)
+        {
+            <span class="text-danger">@error</span>
+            <br />
+        }
     </div>
 }
 <p>Are you sure you want to delete the category <b>@Model.Name</b></p>

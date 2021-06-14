@@ -35,9 +35,8 @@ namespace Haidelberg.Vehicles.DataLayer
 
         public bool TryDeleteCategory(int id)
         {
-            var dbCategory = _context.Categories.Include(x => x.Vehicles).FirstOrDefault(x => x.Id == id);
-
-            if (dbCategory.Vehicles.Any())
+            var dbCategory = _context.Categories.FirstOrDefault(x => x.Id == id);
+            if (dbCategory == null)
             {
                 return false;
             }

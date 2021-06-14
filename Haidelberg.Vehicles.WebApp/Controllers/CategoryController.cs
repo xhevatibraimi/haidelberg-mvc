@@ -59,27 +59,31 @@ namespace Haidelberg.Vehicles.WebApp.Controllers
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            var dbCategory = _categoriesService.GetCategoryById(id);
-            if (dbCategory == null)
+            var serviceResult = _categoriesService.TryGetCategory(id);
+            if (!serviceResult.IsSuccessfull)
             {
                 return RedirectToAction("Index");
             }
 
-            return View(dbCategory);
+            return View(serviceResult.Result);
         }
 
         [HttpPost]
         public IActionResult Delete(int id, Category c)
         {
-            var deleteSucceeded = _categoriesService.TryDeleteCategory(id);
-            if (deleteSucceeded)
+            var serviceResult = _categoriesService.TryDeleteCategory(id);
+            if (serviceResult.IsSuccessfull)
             {
                 return RedirectToAction("Index");
             }
 
-            ViewBag.ErrorMessage = "Unable to delete category, probably it's been used by a vehicle or employee";
-            var dbCategory = _categoriesService.GetCategoryById(id);
-            return View(dbCategory);
+            ViewBag.Errors = serviceResult.Errors;
+            var serviceContentResult = _categoriesService.TryGetCategory(id);
+            if (!serviceContentResult.IsSuccessfull)
+            {
+                return RedirectToAction("Index");
+            }
+            return View(serviceContentResult.Result);
         }
 
         [HttpGet]
