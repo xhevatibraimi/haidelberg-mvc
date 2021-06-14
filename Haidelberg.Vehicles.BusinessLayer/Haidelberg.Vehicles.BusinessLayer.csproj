@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Haidelberg.Vehicles.BusinessLayer.Abstractions\Haidelberg.Vehicles.BusinessLayer.Abstractions.csproj" />
     <ProjectReference Include="..\Haidelberg.Vehicles.DataLayer\Haidelberg.Vehicles.DataLayer.csproj" />
   </ItemGroup>
 

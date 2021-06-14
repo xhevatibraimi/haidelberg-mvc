@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Haidelberg.Vehicles.DataAccess.EF;
 using Haidelberg.Vehicles.DataLayer;
 using Haidelberg.Vehicles.BusinessLayer;
+using Haidelberg.Vehicles.BusinessLayer.Abstractions;
 
 namespace Haidelberg.Vehicles.WebApp
 {
@@ -22,7 +23,9 @@ namespace Haidelberg.Vehicles.WebApp
         public void ConfigureServices(IServiceCollection services)
         {
             // Register Services
-            services.AddTransient<CategoriesService>();
+            services.AddTransient<ICategoriesService, CategoriesService>();
+            //services.AddTransient<ICategoriesService, SqlCategoriesService>();
+            //services.AddTransient<ICategoriesService, MongoCategoriesService>();
             services.AddTransient<VehiclesService>();
 
             // Register Repositories

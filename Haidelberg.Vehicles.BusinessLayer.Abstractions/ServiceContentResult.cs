@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Haidelberg.Vehicles.BusinessLayer
+namespace Haidelberg.Vehicles.BusinessLayer.Abstractions
 {
     public class ServiceResult
     {

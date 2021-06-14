@@ -1,4 +1,5 @@
-﻿using Haidelberg.Vehicles.DataAccess.EF;
+﻿using Haidelberg.Vehicles.BusinessLayer.Abstractions;
+using Haidelberg.Vehicles.DataAccess.EF;
 using Haidelberg.Vehicles.DataLayer;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -6,7 +7,7 @@ using System.Linq;
 
 namespace Haidelberg.Vehicles.BusinessLayer
 {
-    public class CategoriesService : CategoryRepository
+    public class CategoriesService : CategoryRepository, ICategoriesService
     {
         public CategoriesService(DatabaseContext context)
             : base(context)
@@ -61,7 +62,7 @@ namespace Haidelberg.Vehicles.BusinessLayer
             return serviceResult;
         }
 
-        public ServiceResult TryDeleteCategory(int id)
+        public new ServiceResult TryDeleteCategory(int id)
         {
             var result = new ServiceResult();
             

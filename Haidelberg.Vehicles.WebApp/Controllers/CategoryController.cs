@@ -1,15 +1,14 @@
-﻿using Haidelberg.Vehicles.BusinessLayer;
+﻿using Haidelberg.Vehicles.BusinessLayer.Abstractions;
 using Haidelberg.Vehicles.DataAccess.EF;
 using Microsoft.AspNetCore.Mvc;
-using System;
 
 namespace Haidelberg.Vehicles.WebApp.Controllers
 {
     public class CategoryController : Controller
     {
-        private readonly CategoriesService _categoriesService;
+        private readonly ICategoriesService _categoriesService;
 
-        public CategoryController(CategoriesService categoriesService)
+        public CategoryController(ICategoriesService categoriesService)
         {
             _categoriesService = categoriesService;
         }
