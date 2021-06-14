@@ -1,12 +1,7 @@
 ﻿using Haidelberg.Vehicles.BusinessLayer;
 using Haidelberg.Vehicles.DataAccess.EF;
-using Haidelberg.Vehicles.DataLayer;
-using Haidelberg.Vehicles.WebApp.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Haidelberg.Vehicles.WebApp.Controllers
 {
@@ -90,24 +85,24 @@ namespace Haidelberg.Vehicles.WebApp.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            var dbCategory = _categoriesService.GetCategoryById(id);
-            if (dbCategory == null)
+            var serviceResult = _categoriesService.TryGetCategory(id);
+            if (!serviceResult.IsSuccessfull)
             {
                 return RedirectToAction("Index");
             }
 
-            return View(dbCategory);
+            return View(serviceResult.Result);
         }
 
         [HttpPost]
         public IActionResult Edit(int id, Category category)
         {
-            if (!_categoriesService.CategoryExists(id))
+            var serviceResult = _categoriesService.TryEditCategory(category);
+            if (!serviceResult.IsSuccessfull)
             {
-                return RedirectToAction("Index");
+                ViewBag.Errors = serviceResult.Errors;
+                return View(category);
             }
-
-            _categoriesService.Edit(category);
 
             return RedirectToAction("Details", new { Id = id });
         }

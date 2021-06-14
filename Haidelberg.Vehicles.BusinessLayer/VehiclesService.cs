@@ -38,7 +38,11 @@ namespace Haidelberg.Vehicles.BusinessLayer
         {
             if (!CategoryExistsForCreate(vehicle.CategoryId))
             {
-                return new ServiceResult { IsSuccessfull = false, ErrorMessage = "The provided category does not exist" };
+                return new ServiceResult
+                {
+                    IsSuccessfull = false,
+                    Errors = new List<string> { "The provided category does not exist" }
+                };
             }
 
             _context.Add(vehicle);
@@ -57,11 +61,15 @@ namespace Haidelberg.Vehicles.BusinessLayer
             return _context.Vehicles.Any(x => x.Id == id);
         }
 
-        public UpdateVehicleResult UpdateVehicle(Vehicle vehicle)
+        public ServiceResult UpdateVehicle(Vehicle vehicle)
         {
             if (!CategoryExistsForCreate(vehicle.CategoryId))
             {
-                return new UpdateVehicleResult { IsSuccessfull = false, ErrorMessage = "Category does not exist" };
+                return new ServiceResult
+                {
+                    IsSuccessfull = false,
+                    Errors = new List<string> { "Category does not exist" }
+                };
             }
 
             var dbVehicle = _context.Vehicles.FirstOrDefault(x => x.Id == vehicle.Id);
@@ -74,7 +82,7 @@ namespace Haidelberg.Vehicles.BusinessLayer
 
             _context.SaveChanges();
 
-            return new UpdateVehicleResult { IsSuccessfull = true };
+            return new ServiceResult { IsSuccessfull = true };
         }
     }
 }

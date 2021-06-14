@@ -43,7 +43,7 @@ namespace Haidelberg.Vehicles.WebApp.Controllers
             var createResult = _vehiclesService.CreateVehicle(vehicle);
             if (!createResult.IsSuccessfull)
             {
-                ViewBag.ErrorMessage = createResult.ErrorMessage;
+                ViewBag.Errors = createResult.Errors;
                 ViewBag.Categories = _vehiclesService.GetAllVehicleCategoriesForCreate();
                 return View(vehicle);
             }
@@ -97,7 +97,7 @@ namespace Haidelberg.Vehicles.WebApp.Controllers
             if (!updateResult.IsSuccessfull)
             {
                 ViewBag.Categories = _vehiclesService.GetAllVehicleCategoriesForCreate();
-                ViewBag.ErrorMessages = new List<string> { updateResult.ErrorMessage };
+                ViewBag.Errors = updateResult.Errors;
                 return View(vehicle);
             }
 

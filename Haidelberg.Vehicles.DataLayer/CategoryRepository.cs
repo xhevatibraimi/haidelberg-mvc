@@ -47,20 +47,19 @@ namespace Haidelberg.Vehicles.DataLayer
             return true;
         }
 
-        public bool CategoryExists(int id)
-        {
-            var category = _context.Categories.FirstOrDefault(x => x.Id == id);
-            return category != null;
-        }
 
-        public void Edit(Category category)
+
+        public bool TryEditCategory(Category category)
         {
             var dbCategory = _context.Categories.FirstOrDefault(x => x.Id == category.Id);
-            if (dbCategory != null)
+            if (dbCategory == null)
             {
-                dbCategory.Name = category.Name;
-                _context.SaveChanges();
+                return false;
             }
+
+            dbCategory.Name = category.Name;
+            _context.SaveChanges();
+            return true;
         }
     }
 }
