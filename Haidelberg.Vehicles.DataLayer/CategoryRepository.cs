@@ -8,14 +8,14 @@ namespace Haidelberg.Vehicles.DataLayer
 {
     public class CategoryRepository
     {
-        private readonly DatabaseContext _context;
+        protected readonly DatabaseContext _context;
 
         public CategoryRepository(DatabaseContext context)
         {
             _context = context;
         }
 
-        public void CreateCategory(Category category)
+        protected void CreateCategory(Category category)
         {
             _context.Add(category);
             _context.SaveChanges();

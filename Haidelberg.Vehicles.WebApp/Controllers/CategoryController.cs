@@ -1,5 +1,7 @@
-﻿using Haidelberg.Vehicles.DataAccess.EF;
+﻿using Haidelberg.Vehicles.BusinessLayer;
+using Haidelberg.Vehicles.DataAccess.EF;
 using Haidelberg.Vehicles.DataLayer;
+using Haidelberg.Vehicles.WebApp.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -10,11 +12,11 @@ namespace Haidelberg.Vehicles.WebApp.Controllers
 {
     public class CategoryController : Controller
     {
-        private readonly CategoryRepository _categoryRepository;
+        private readonly CategoriesService _categoriesService;
 
-        public CategoryController(CategoryRepository categoryRepository)
+        public CategoryController(CategoriesService categoriesService)
         {
-            _categoryRepository = categoryRepository;
+            _categoriesService = categoriesService;
         }
 
         [HttpGet]
@@ -24,27 +26,33 @@ namespace Haidelberg.Vehicles.WebApp.Controllers
             //ViewData["Categories"] = "a,b,c,d,e";
             //TempData["Text"] = "hello from index";
             //return RedirectToAction("Redirect");
-            var categories = _categoryRepository.GetAllCategories();
+            var categories = _categoriesService.GetAllCategories();
             return View(categories);
         }
 
         [HttpGet]
         public IActionResult Create()
         {
-            return View();
+            return View(new Category());
         }
 
         [HttpPost]
         public IActionResult Create(Category model)
         {
-            _categoryRepository.CreateCategory(model);
+            var result = _categoriesService.TryCreateCategory(model);
+            if (!result.IsSuccessfull)
+            {
+                ViewBag.Errors = result.Errors;
+                return View(model);
+            }
+
             return RedirectToAction("Details", new { model.Id });
         }
 
         [HttpGet]
         public IActionResult Details(int id)
         {
-            var dbCategory = _categoryRepository.GetCategoryById(id);
+            var dbCategory = _categoriesService.GetCategoryById(id);
             if (dbCategory == null)
             {
                 return RedirectToAction("Index");
@@ -56,7 +64,7 @@ namespace Haidelberg.Vehicles.WebApp.Controllers
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            var dbCategory = _categoryRepository.GetCategoryById(id);
+            var dbCategory = _categoriesService.GetCategoryById(id);
             if (dbCategory == null)
             {
                 return RedirectToAction("Index");
@@ -68,21 +76,21 @@ namespace Haidelberg.Vehicles.WebApp.Controllers
         [HttpPost]
         public IActionResult Delete(int id, Category c)
         {
-            var deleteSucceeded = _categoryRepository.TryDeleteCategory(id);
+            var deleteSucceeded = _categoriesService.TryDeleteCategory(id);
             if (deleteSucceeded)
             {
                 return RedirectToAction("Index");
             }
 
             ViewBag.ErrorMessage = "Unable to delete category, probably it's been used by a vehicle or employee";
-            var dbCategory = _categoryRepository.GetCategoryById(id);
+            var dbCategory = _categoriesService.GetCategoryById(id);
             return View(dbCategory);
         }
 
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            var dbCategory = _categoryRepository.GetCategoryById(id);
+            var dbCategory = _categoriesService.GetCategoryById(id);
             if (dbCategory == null)
             {
                 return RedirectToAction("Index");
@@ -94,13 +102,13 @@ namespace Haidelberg.Vehicles.WebApp.Controllers
         [HttpPost]
         public IActionResult Edit(int id, Category category)
         {
-            if (!_categoryRepository.CategoryExists(id))
+            if (!_categoriesService.CategoryExists(id))
             {
                 return RedirectToAction("Index");
             }
 
-            _categoryRepository.Edit(category);
-            
+            _categoriesService.Edit(category);
+
             return RedirectToAction("Details", new { Id = id });
         }
 

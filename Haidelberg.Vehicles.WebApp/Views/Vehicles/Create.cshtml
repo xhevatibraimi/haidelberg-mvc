@@ -2,13 +2,16 @@
 
 <form action="/vehicles/create" method="post">
 
-    @if (ViewBag.ErrorMessage != null)
+    @if (ViewBag.ErrorMessages != null)
     {
         <div class="form-group">
-            <span class="text-danger">@ViewBag.ErrorMessage</span>
+            @foreach (var errorMessage in ViewBag.ErrorMessages)
+            {
+                <span class="text-danger">@errorMessage</span>
+                <br />
+            }
         </div>
     }
-
     <div class="form-group">
         <label for="ProductionYear">Production Year</label>
         <input id="ProductionYear" type="number" name="ProductionYear" value="@Model.ProductionYear" />

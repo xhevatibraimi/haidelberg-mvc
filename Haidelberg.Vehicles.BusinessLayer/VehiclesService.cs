@@ -34,16 +34,16 @@ namespace Haidelberg.Vehicles.BusinessLayer
             return _context.Categories.Any(x => x.Id == categoryId);
         }
 
-        public CreateVehicleResult CreateVehicle(Vehicle vehicle)
+        public ServiceResult CreateVehicle(Vehicle vehicle)
         {
             if (!CategoryExistsForCreate(vehicle.CategoryId))
             {
-                return new CreateVehicleResult { IsSuccessfull = false, ErrorMessage = "The provided category does not exist" };
+                return new ServiceResult { IsSuccessfull = false, ErrorMessage = "The provided category does not exist" };
             }
 
             _context.Add(vehicle);
             _context.SaveChanges();
-            return new CreateVehicleResult { IsSuccessfull = true };
+            return new ServiceResult { IsSuccessfull = true };
         }
 
         public Vehicle GetVehicleWithCategory(int id)

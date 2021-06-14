@@ -1,4 +1,20 @@
-﻿<form action="/Category/Create" method="post">
-    <input type="text" name="Name" />
+﻿@model Haidelberg.Vehicles.DataAccess.EF.Category
+
+<form action="/Category/Create" method="post">
+    @if (ViewBag.Errors != null)
+    {
+        <div class="form-group">
+            @foreach (var error in ViewBag.Errors)
+            {
+                <span class="text-danger">@error</span>
+                <br />
+            }
+        </div>
+    }
+
+    <div class="form-group">
+        <label for="name">Name:</label>
+        <input id="name" type="text" name="Name" value="@Model.Name" />
+    </div>
     <input type="submit" value="Create" />
 </form>

@@ -6,12 +6,12 @@
 
 <form action="/vehicles/edit/@Model.Id" method="post">
     <input type="hidden" name="Id" value="@Model.Id" />
-    @if (ViewBag.ErrorMessages != null)
+    @if (ViewBag.Errors != null)
     {
         <div class="form-group">
-            @foreach (var errorMessage in ViewBag.ErrorMessages)
+            @foreach (var error in ViewBag.Errors)
             {
-                <span class="text-danger">@errorMessage</span>
+                <span class="text-danger">@error</span>
                 <br />
             }
         </div>

@@ -22,6 +22,7 @@ namespace Haidelberg.Vehicles.WebApp
         public void ConfigureServices(IServiceCollection services)
         {
             // Register Services
+            services.AddTransient<CategoriesService>();
             services.AddTransient<VehiclesService>();
 
             // Register Repositories
