@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Haidelberg.Vehicles.WebApp.Controllers
 {
     public class CategoryController : Controller
-    {
+    {   
         private readonly ICategoriesService _categoriesService;
 
         public CategoryController(ICategoriesService categoriesService)
@@ -24,6 +24,18 @@ namespace Haidelberg.Vehicles.WebApp.Controllers
             //return RedirectToAction("Redirect");
             var categories = _categoriesService.GetAllCategories();
             return View(categories);
+        }
+
+        [HttpGet]
+        public IActionResult DetailsSpecial(int id)
+        {
+            var serviceResult = _categoriesService.GetCategoryByIdSpecial(id);
+            if (!serviceResult.IsSuccessfull)
+            {
+                return RedirectToAction("Index");
+            }
+
+            return View(serviceResult.Result);
         }
 
         [HttpGet]

@@ -1,0 +1,6 @@
+﻿@model GetCategoryByIdSpecialResponse
+Category Name: @Model.Name (Used by @Model.UsedByVehiclesCount vehicles)
+<br />
+
+<a class="btn btn-warning" href="/category/edit/@Model.Id">Edit</a>
+<a class="btn btn-danger" href="/category/delete/@Model.Id">Delete</a>

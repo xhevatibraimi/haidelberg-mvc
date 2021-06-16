@@ -92,8 +92,8 @@ namespace Haidelberg.Vehicles.BusinessLayer
 
             serviceResult.Result = new GetCategoryResponse
             {
-                Id = category.Id,
-                Name = category.Name
+                Id = 45,
+                Name = "DC"
             };
             serviceResult.IsSuccessfull = true;
             return serviceResult;
@@ -191,7 +191,7 @@ namespace Haidelberg.Vehicles.BusinessLayer
             return result;
         }
 
-        public GetCategoryByIdResponse GetCategoryById(int id)
+        public new GetCategoryByIdResponse GetCategoryById(int id)
         {
             var category = base.GetCategoryById(id);
             return new GetCategoryByIdResponse
@@ -200,5 +200,27 @@ namespace Haidelberg.Vehicles.BusinessLayer
                 Name = category.Name
             };
         }
+
+        public ServiceContentResult<GetCategoryByIdSpecialResponse> GetCategoryByIdSpecial(int id)
+        {
+            var response = new ServiceContentResult<GetCategoryByIdSpecialResponse>();
+
+            var category = _context.Categories.Include(x => x.Vehicles).FirstOrDefault(x => x.Id == id);
+            if (category == null)
+            {
+                response.AddError("category no found");
+                return response;
+            }
+
+            response.IsSuccessfull = true;
+            response.Result = new GetCategoryByIdSpecialResponse
+            {
+                Id = category.Id,
+                Name = category.Name,
+                UsedByVehiclesCount = category.Vehicles.Count
+            };
+            return response;
+        }
     }
 }
+
