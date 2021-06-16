@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Haidelberg.Vehicles.DataAccess.EF;
 using System.Linq;
-using Haidelberg.Vehicles.DataLayer;
 using Haidelberg.Vehicles.BusinessLayer;
-using System.Collections.Generic;
 
 namespace Haidelberg.Vehicles.WebApp.Controllers
 {
