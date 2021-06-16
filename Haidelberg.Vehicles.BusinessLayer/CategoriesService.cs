@@ -1,8 +1,9 @@
 ﻿using Haidelberg.Vehicles.BusinessLayer.Abstractions;
+using Haidelberg.Vehicles.BusinessLayer.Abstractions.Requests;
+using Haidelberg.Vehicles.BusinessLayer.Abstractions.Responses;
 using Haidelberg.Vehicles.DataAccess.EF;
 using Haidelberg.Vehicles.DataLayer;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Linq;
 
 namespace Haidelberg.Vehicles.BusinessLayer
@@ -14,42 +15,74 @@ namespace Haidelberg.Vehicles.BusinessLayer
         {
         }
 
-        public ServiceResult TryCreateCategory(Category category)
+        public GetAllCategoriesResponse GetAllCategories(int skip = 0, int take = 10)
         {
-            var result = new ServiceResult();
-            if (category == null)
+            var categories = _context.Categories.Select(x => new GetAllCategoriesResponse.Category
+            {
+                Id = x.Id,
+                Name = x.Name
+            })
+            .Skip(skip)
+            .Take(take)
+            .ToList();
+
+            var totalCategories = _context.Categories.Count();
+
+            return new GetAllCategoriesResponse
+            {
+                Categories = categories,
+                Count = categories.Count,
+                Skip = skip,
+                Take = take,
+                Total = totalCategories
+            };
+        }
+
+        public ServiceContentResult<CreateCategoryResponse> TryCreateCategory(CreateCategoryRequest request)
+        {
+            var result = new ServiceContentResult<CreateCategoryResponse>();
+            if (request == null)
             {
                 result.Errors.Add("The category should not be null");
                 return result;
             }
 
-            if (string.IsNullOrWhiteSpace(category.Name))
+            if (string.IsNullOrWhiteSpace(request.Name))
             {
                 result.Errors.Add("The category name should not be null, empty or whitespace");
                 return result;
             }
 
-            if (category.Name.Length > 5)
+            if (request.Name.Length > 5)
             {
                 result.Errors.Add("The category name should be from 1 to 5 characters long");
                 return result;
             }
 
-            if (CategoryExists(category.Name))
+            if (CategoryExists(request.Name))
             {
-                result.Errors.Add($"The category with name '{category.Name}' already exists");
+                result.Errors.Add($"The category with name '{request.Name}' already exists");
                 return result;
             }
 
-            CreateCategory(category);
+            var newCategory = new Category
+            {
+                Name = request.Name
+            };
+            CreateCategory(newCategory);
 
             result.IsSuccessfull = true;
+            result.Result = new CreateCategoryResponse
+            {
+                Id = newCategory.Id,
+                Name = newCategory.Name
+            };
             return result;
         }
 
-        public ServiceContentResult<Category> TryGetCategory(int id)
+        public ServiceContentResult<GetCategoryResponse> TryGetCategory(int id)
         {
-            var serviceResult = new ServiceContentResult<Category>();
+            var serviceResult = new ServiceContentResult<GetCategoryResponse>();
             var category = _context.Categories.FirstOrDefault(x => x.Id == id);
             if (category == null)
             {
@@ -57,7 +90,11 @@ namespace Haidelberg.Vehicles.BusinessLayer
                 return serviceResult;
             }
 
-            serviceResult.Result = category;
+            serviceResult.Result = new GetCategoryResponse
+            {
+                Id = category.Id,
+                Name = category.Name
+            };
             serviceResult.IsSuccessfull = true;
             return serviceResult;
         }
@@ -65,12 +102,12 @@ namespace Haidelberg.Vehicles.BusinessLayer
         public new ServiceResult TryDeleteCategory(int id)
         {
             var result = new ServiceResult();
-            
+
             var dbCategory = _context.Categories
-                .Include(x=>x.Vehicles)
+                .Include(x => x.Vehicles)
                 .Include(x => x.Employees)
                 .FirstOrDefault(x => x.Id == id);
-            if(dbCategory == null)
+            if (dbCategory == null)
             {
                 result.AddError("Category not found");
                 return result;
@@ -110,34 +147,40 @@ namespace Haidelberg.Vehicles.BusinessLayer
             return category != null;
         }
 
-        public new ServiceResult TryEditCategory(Category category)
+        public ServiceResult TryEditCategory(EditCategoryRequest request)
         {
             var result = new ServiceResult();
-            if (category == null)
+            if (request == null)
             {
                 result.Errors.Add("The category should not be null");
                 return result;
             }
 
-            if (string.IsNullOrWhiteSpace(category.Name))
+            if (string.IsNullOrWhiteSpace(request.Name))
             {
                 result.Errors.Add("The category name should not be null, empty or whitespace");
                 return result;
             }
 
-            if (category.Name.Length > 5)
+            if (request.Name.Length > 5)
             {
                 result.Errors.Add("The category name should be from 1 to 5 characters long");
                 return result;
             }
 
-            if (CategoryExists(category.Name))
+            if (CategoryExists(request.Name))
             {
-                result.Errors.Add($"The category with name '{category.Name}' already exists");
+                result.Errors.Add($"The category with name '{request.Name}' already exists");
                 return result;
             }
 
-            var editSucceeded = base.TryEditCategory(category);
+            var newCategory = new Category
+            {
+                Id = request.Id,
+                Name = request.Name
+            };
+
+            var editSucceeded = TryEditCategory(newCategory);
             if (!editSucceeded)
             {
                 result.Errors.Add("Category not found");
@@ -146,6 +189,16 @@ namespace Haidelberg.Vehicles.BusinessLayer
 
             result.IsSuccessfull = true;
             return result;
+        }
+
+        public GetCategoryByIdResponse GetCategoryById(int id)
+        {
+            var category = base.GetCategoryById(id);
+            return new GetCategoryByIdResponse
+            {
+                Id = category.Id,
+                Name = category.Name
+            };
         }
     }
 }

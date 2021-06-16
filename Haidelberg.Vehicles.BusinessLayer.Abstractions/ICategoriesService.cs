@@ -1,15 +1,15 @@
-﻿using Haidelberg.Vehicles.DataAccess.EF;
-using System.Collections.Generic;
+﻿using Haidelberg.Vehicles.BusinessLayer.Abstractions.Requests;
+using Haidelberg.Vehicles.BusinessLayer.Abstractions.Responses;
 
 namespace Haidelberg.Vehicles.BusinessLayer.Abstractions
 {
     public interface ICategoriesService
     {
-        List<Category> GetAllCategories();
-        Category GetCategoryById(int id);
-        ServiceContentResult<Category> TryGetCategory(int id);
-        ServiceResult TryCreateCategory(Category category);
-        ServiceResult TryEditCategory(Category category);
+        GetAllCategoriesResponse GetAllCategories(int skip = 0, int take = 10);
+        GetCategoryByIdResponse GetCategoryById(int id);
+        ServiceContentResult<GetCategoryResponse> TryGetCategory(int id);
+        ServiceContentResult<CreateCategoryResponse> TryCreateCategory(CreateCategoryRequest request);
+        ServiceResult TryEditCategory(EditCategoryRequest request);
         ServiceResult TryDeleteCategory(int id);
         bool CategoryExists(string name);
         bool CategoryExists(int id);

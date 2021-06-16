@@ -1,4 +1,6 @@
 ﻿using Haidelberg.Vehicles.BusinessLayer.Abstractions;
+using Haidelberg.Vehicles.BusinessLayer.Abstractions.Requests;
+using Haidelberg.Vehicles.BusinessLayer.Abstractions.Responses;
 using Haidelberg.Vehicles.DataAccess.EF;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,20 +29,20 @@ namespace Haidelberg.Vehicles.WebApp.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            return View(new Category());
+            return View(new CreateCategoryResponse());
         }
 
         [HttpPost]
-        public IActionResult Create(Category model)
+        public IActionResult Create(CreateCategoryRequest request)
         {
-            var result = _categoriesService.TryCreateCategory(model);
-            if (!result.IsSuccessfull)
+            var serviceResult = _categoriesService.TryCreateCategory(request);
+            if (!serviceResult.IsSuccessfull)
             {
-                ViewBag.Errors = result.Errors;
-                return View(model);
+                ViewBag.Errors = serviceResult.Errors;
+                return View(serviceResult.Result);
             }
 
-            return RedirectToAction("Details", new { model.Id });
+            return RedirectToAction("Details", new { serviceResult.Result.Id });
         }
 
         [HttpGet]
@@ -98,13 +100,13 @@ namespace Haidelberg.Vehicles.WebApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(int id, Category category)
+        public IActionResult Edit(int id, EditCategoryRequest request)
         {
-            var serviceResult = _categoriesService.TryEditCategory(category);
+            var serviceResult = _categoriesService.TryEditCategory(request);
             if (!serviceResult.IsSuccessfull)
             {
                 ViewBag.Errors = serviceResult.Errors;
-                return View(category);
+                return View(request);
             }
 
             return RedirectToAction("Details", new { Id = id });

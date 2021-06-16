@@ -46,8 +46,6 @@ namespace Haidelberg.Vehicles.DataLayer
             return true;
         }
 
-
-
         public bool TryEditCategory(Category category)
         {
             var dbCategory = _context.Categories.FirstOrDefault(x => x.Id == category.Id);
