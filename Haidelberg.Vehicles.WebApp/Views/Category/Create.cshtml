@@ -1,16 +1,7 @@
 ﻿@model Haidelberg.Vehicles.DataAccess.EF.Category
 
 <form action="/Category/Create" method="post">
-    @if (ViewBag.Errors != null)
-    {
-        <div class="form-group">
-            @foreach (var error in ViewBag.Errors)
-            {
-                <span class="text-danger">@error</span>
-                <br />
-            }
-        </div>
-    }
+    @Html.DisplayErrors((List<string>)ViewBag.Errors)
 
     <div class="form-group">
         <label for="name">Name:</label>

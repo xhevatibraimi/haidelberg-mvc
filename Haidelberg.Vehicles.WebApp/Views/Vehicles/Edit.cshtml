@@ -1,21 +1,13 @@
 ﻿@model Haidelberg.Vehicles.DataAccess.EF.Vehicle
 
+
 @{
     ViewData["Title"] = "Edit";
 }
 
 <form action="/vehicles/edit/@Model.Id" method="post">
     <input type="hidden" name="Id" value="@Model.Id" />
-    @if (ViewBag.Errors != null)
-    {
-        <div class="form-group">
-            @foreach (var error in ViewBag.Errors)
-            {
-                <span class="text-danger">@error</span>
-                <br />
-            }
-        </div>
-    }
+    @Html.DisplayErrors((List<string>)ViewBag.Errors)
 
     <div class="form-group">
         <label for="ProductionYear">Production Year</label>

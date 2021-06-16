@@ -1,15 +1,6 @@
 ﻿@model Haidelberg.Vehicles.DataAccess.EF.Category
 
-@if (ViewBag.Errors != null)
-{
-    <div class="form-group">
-        @foreach (var error in ViewBag.Errors)
-        {
-            <span class="text-danger">@error</span>
-            <br />
-        }
-    </div>
-}
+@Html.DisplayErrors((List<string>)ViewBag.Errors)
 <p>Are you sure you want to delete the category <b>@Model.Name</b></p>
 
 <a class="btn btn-success" href="/category">No</a>

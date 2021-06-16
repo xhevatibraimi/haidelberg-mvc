@@ -1,16 +1,7 @@
 ﻿@model Haidelberg.Vehicles.DataAccess.EF.Category
 
 <form action="/category/edit/@Model.Id" method="post">
-    @if (ViewBag.Errors != null)
-    {
-        <div class="form-group">
-            @foreach (var error in ViewBag.Errors)
-            {
-                <span class="text-danger">@error</span>
-                <br />
-            }
-        </div>
-    }
+    @Html.DisplayErrors((List<string>)ViewBag.Errors)
 
     <input type="hidden" name="Id" value="@Model.Id" />
     <div class="form-group">

@@ -35,7 +35,7 @@ namespace Haidelberg.Vehicles.WebApp.Controllers
         {
             if (!ModelState.IsValid)
             {
-                ViewBag.ErrorMessage = ModelState.FirstOrDefault(x => x.Value.Errors.Any()).Value?.Errors?.FirstOrDefault()?.ErrorMessage;
+                ViewBag.Errors = ModelState.SelectMany(x => x.Value.Errors).Select(x=>x.ErrorMessage).ToList();
                 ViewBag.Categories = _vehiclesService.GetAllVehicleCategoriesForCreate();
                 return View(vehicle);
             }
@@ -88,7 +88,7 @@ namespace Haidelberg.Vehicles.WebApp.Controllers
 
             if (!ModelState.IsValid)
             {
-                ViewBag.ErrorMessages = ModelState.SelectMany(x => x.Value.Errors).Select(x => x.ErrorMessage).ToList();
+                ViewBag.Errors = ModelState.SelectMany(x => x.Value.Errors).Select(x => x.ErrorMessage).ToList();
                 ViewBag.Categories = _vehiclesService.GetAllVehicleCategoriesForCreate();
                 return View(vehicle);
             }
