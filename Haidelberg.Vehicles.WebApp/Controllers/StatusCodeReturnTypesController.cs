@@ -11,7 +11,7 @@ namespace Haidelberg.Vehicles.WebApp.Controllers
         }
 
         [HttpGet("/learning/not-found")]
-        public StatusCodeResult NotFound()
+        public new StatusCodeResult NotFound()
         {
             return base.NotFound();
         }

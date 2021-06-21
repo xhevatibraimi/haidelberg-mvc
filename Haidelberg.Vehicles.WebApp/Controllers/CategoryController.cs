@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Haidelberg.Vehicles.WebApp.Controllers
 {
     public class CategoryController : Controller
-    {   
+    {
         private readonly ICategoriesService _categoriesService;
 
         public CategoryController(ICategoriesService categoriesService)
@@ -22,14 +22,19 @@ namespace Haidelberg.Vehicles.WebApp.Controllers
             //ViewData["Categories"] = "a,b,c,d,e";
             //TempData["Text"] = "hello from index";
             //return RedirectToAction("Redirect");
-            var categories = _categoriesService.GetAllCategories();
-            return View(categories);
+            var serviceResult = _categoriesService.TryGetAllCategories();
+            if (serviceResult.IsSuccessfull)
+            {
+                return View(serviceResult.Result);
+            }
+
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
         public IActionResult DetailsSpecial(int id)
         {
-            var serviceResult = _categoriesService.GetCategoryByIdSpecial(id);
+            var serviceResult = _categoriesService.TryGetCategoryByIdSpecial(id);
             if (!serviceResult.IsSuccessfull)
             {
                 return RedirectToAction("Index");
@@ -51,7 +56,11 @@ namespace Haidelberg.Vehicles.WebApp.Controllers
             if (!serviceResult.IsSuccessfull)
             {
                 ViewBag.Errors = serviceResult.Errors;
-                return View(serviceResult.Result);
+                var model = new CreateCategoryResponse
+                {
+                    Name = request.Name
+                };
+                return View(model);
             }
 
             return RedirectToAction("Details", new { serviceResult.Result.Id });
@@ -60,19 +69,19 @@ namespace Haidelberg.Vehicles.WebApp.Controllers
         [HttpGet]
         public IActionResult Details(int id)
         {
-            var dbCategory = _categoriesService.GetCategoryById(id);
-            if (dbCategory == null)
+            var serviceResult = _categoriesService.TryGetCategoryById(id);
+            if (serviceResult == null)
             {
                 return RedirectToAction("Index");
             }
 
-            return View(dbCategory);
+            return View(serviceResult.Result);
         }
 
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            var serviceResult = _categoriesService.TryGetCategory(id);
+            var serviceResult = _categoriesService.TryGetCategoryForDelete(id);
             if (!serviceResult.IsSuccessfull)
             {
                 return RedirectToAction("Index");
@@ -91,18 +100,20 @@ namespace Haidelberg.Vehicles.WebApp.Controllers
             }
 
             ViewBag.Errors = serviceResult.Errors;
+
             var serviceContentResult = _categoriesService.TryGetCategory(id);
             if (!serviceContentResult.IsSuccessfull)
             {
                 return RedirectToAction("Index");
             }
+
             return View(serviceContentResult.Result);
         }
 
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            var serviceResult = _categoriesService.GetCategoryForEdit(id);
+            var serviceResult = _categoriesService.TryGetCategoryForEdit(id);
             if (!serviceResult.IsSuccessfull)
             {
                 return RedirectToAction("Index");

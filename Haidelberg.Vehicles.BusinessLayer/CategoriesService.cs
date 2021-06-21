@@ -15,8 +15,9 @@ namespace Haidelberg.Vehicles.BusinessLayer
         {
         }
 
-        public GetAllCategoriesResponse GetAllCategories(int skip = 0, int take = 10)
+        public ServiceResult<GetAllCategoriesResponse> TryGetAllCategories(int skip = 0, int take = 10)
         {
+            var response = new ServiceResult<GetAllCategoriesResponse>();
             var categories = _context.Categories.Select(x => new GetAllCategoriesResponse.Category
             {
                 Id = x.Id,
@@ -28,7 +29,8 @@ namespace Haidelberg.Vehicles.BusinessLayer
 
             var totalCategories = _context.Categories.Count();
 
-            return new GetAllCategoriesResponse
+            response.IsSuccessfull = true;
+            response.Result = new GetAllCategoriesResponse
             {
                 Categories = categories,
                 Count = categories.Count,
@@ -36,6 +38,8 @@ namespace Haidelberg.Vehicles.BusinessLayer
                 Take = take,
                 Total = totalCategories
             };
+
+            return response;
         }
 
         public ServiceResult<CreateCategoryResponse> TryCreateCategory(CreateCategoryRequest request)
@@ -135,18 +139,6 @@ namespace Haidelberg.Vehicles.BusinessLayer
             return result;
         }
 
-        public bool CategoryExists(string name)
-        {
-            var category = _context.Categories.FirstOrDefault(x => x.Name.ToLower() == name.ToLower());
-            return category != null;
-        }
-
-        public bool CategoryExists(int id)
-        {
-            var category = _context.Categories.FirstOrDefault(x => x.Id == id);
-            return category != null;
-        }
-
         public ServiceResult TryEditCategory(EditCategoryRequest request)
         {
             var result = new ServiceResult();
@@ -191,17 +183,22 @@ namespace Haidelberg.Vehicles.BusinessLayer
             return result;
         }
 
-        public new GetCategoryByIdResponse GetCategoryById(int id)
+        public ServiceResult<GetCategoryByIdResponse> TryGetCategoryById(int id)
         {
+            var response = new ServiceResult<GetCategoryByIdResponse>();
             var category = base.GetCategoryById(id);
-            return new GetCategoryByIdResponse
+
+            response.IsSuccessfull = true;
+            response.Result = new GetCategoryByIdResponse
             {
                 Id = category.Id,
                 Name = category.Name
             };
+
+            return response;
         }
 
-        public ServiceResult<GetCategoryByIdSpecialResponse> GetCategoryByIdSpecial(int id)
+        public ServiceResult<GetCategoryByIdSpecialResponse> TryGetCategoryByIdSpecial(int id)
         {
             var response = new ServiceResult<GetCategoryByIdSpecialResponse>();
 
@@ -222,10 +219,10 @@ namespace Haidelberg.Vehicles.BusinessLayer
             return response;
         }
 
-        public ServiceResult<GetCategoryForEditResponse> GetCategoryForEdit(int id)
+        public ServiceResult<GetCategoryForEditResponse> TryGetCategoryForEdit(int id)
         {
             var response = new ServiceResult<GetCategoryForEditResponse>();
-            
+
             var category = _context.Categories.FirstOrDefault(x => x.Id == id);
             if (category == null)
             {
@@ -241,6 +238,33 @@ namespace Haidelberg.Vehicles.BusinessLayer
             };
 
             return response;
+        }
+
+        public ServiceResult<TryGetCategoryForDeleteResponse> TryGetCategoryForDelete(int id)
+        {
+            var response = new ServiceResult<TryGetCategoryForDeleteResponse>();
+
+            var category = _context.Categories.FirstOrDefault(x => x.Id == id);
+            if (category == null)
+            {
+                response.AddError("category no found");
+                return response;
+            }
+
+            response.IsSuccessfull = true;
+            response.Result = new TryGetCategoryForDeleteResponse
+            {
+                Id = category.Id,
+                Name = category.Name
+            };
+
+            return response;
+        }
+
+        private bool CategoryExists(string name)
+        {
+            var category = _context.Categories.FirstOrDefault(x => x.Name.ToLower() == name.ToLower());
+            return category != null;
         }
     }
 }
