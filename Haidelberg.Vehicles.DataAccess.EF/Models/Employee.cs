@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Haidelberg.Vehicles.DataAccess.EF
 {
-   public class Employee
+    public class Employee
     {
         public int Id { get; set; }
         public string FirstName { get; set; }
@@ -23,6 +23,6 @@ namespace Haidelberg.Vehicles.DataAccess.EF
         public virtual Branch Branch { get; set; }
 
         public virtual ICollection<Expense> Expenses { get; set; }
-        //public virtual ICollection<VehicleEmployee> VehicleEmployees { get; set; }
+        public virtual ICollection<VehicleEmployee> VehicleEmployees { get; set; }
     }
 }

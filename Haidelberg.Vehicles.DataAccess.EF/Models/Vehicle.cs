@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -22,7 +23,7 @@ namespace Haidelberg.Vehicles.DataAccess.EF
         [ForeignKey("CategoryId")]
         public virtual Category Category { get; set; }
 
-        //public virtual ICollection<VehicleEmployee> VehicleEmployees { get; set; }
+        public virtual ICollection<VehicleEmployee> VehicleEmployees { get; set; }
 
     }
 }

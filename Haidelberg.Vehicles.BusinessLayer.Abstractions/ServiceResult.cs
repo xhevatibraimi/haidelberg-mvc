@@ -10,7 +10,7 @@ namespace Haidelberg.Vehicles.BusinessLayer.Abstractions
         public void AddError(string error) => Errors.Add(error);
     }
 
-    public class ServiceContentResult<T> : ServiceResult
+    public class ServiceResult<T> : ServiceResult
     {
         public T Result { get; set; }
     }

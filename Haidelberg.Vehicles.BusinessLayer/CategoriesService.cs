@@ -38,9 +38,9 @@ namespace Haidelberg.Vehicles.BusinessLayer
             };
         }
 
-        public ServiceContentResult<CreateCategoryResponse> TryCreateCategory(CreateCategoryRequest request)
+        public ServiceResult<CreateCategoryResponse> TryCreateCategory(CreateCategoryRequest request)
         {
-            var result = new ServiceContentResult<CreateCategoryResponse>();
+            var result = new ServiceResult<CreateCategoryResponse>();
             if (request == null)
             {
                 result.Errors.Add("The category should not be null");
@@ -80,9 +80,9 @@ namespace Haidelberg.Vehicles.BusinessLayer
             return result;
         }
 
-        public ServiceContentResult<GetCategoryResponse> TryGetCategory(int id)
+        public ServiceResult<GetCategoryResponse> TryGetCategory(int id)
         {
-            var serviceResult = new ServiceContentResult<GetCategoryResponse>();
+            var serviceResult = new ServiceResult<GetCategoryResponse>();
             var category = _context.Categories.FirstOrDefault(x => x.Id == id);
             if (category == null)
             {
@@ -201,9 +201,9 @@ namespace Haidelberg.Vehicles.BusinessLayer
             };
         }
 
-        public ServiceContentResult<GetCategoryByIdSpecialResponse> GetCategoryByIdSpecial(int id)
+        public ServiceResult<GetCategoryByIdSpecialResponse> GetCategoryByIdSpecial(int id)
         {
-            var response = new ServiceContentResult<GetCategoryByIdSpecialResponse>();
+            var response = new ServiceResult<GetCategoryByIdSpecialResponse>();
 
             var category = _context.Categories.Include(x => x.Vehicles).FirstOrDefault(x => x.Id == id);
             if (category == null)
@@ -219,6 +219,27 @@ namespace Haidelberg.Vehicles.BusinessLayer
                 Name = category.Name,
                 UsedByVehiclesCount = category.Vehicles.Count
             };
+            return response;
+        }
+
+        public ServiceResult<GetCategoryForEditResponse> GetCategoryForEdit(int id)
+        {
+            var response = new ServiceResult<GetCategoryForEditResponse>();
+            
+            var category = _context.Categories.FirstOrDefault(x => x.Id == id);
+            if (category == null)
+            {
+                response.AddError("category no found");
+                return response;
+            }
+
+            response.IsSuccessfull = true;
+            response.Result = new GetCategoryForEditResponse
+            {
+                Id = category.Id,
+                Name = category.Name
+            };
+
             return response;
         }
     }

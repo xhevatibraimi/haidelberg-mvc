@@ -102,7 +102,7 @@ namespace Haidelberg.Vehicles.WebApp.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            var serviceResult = _categoriesService.TryGetCategory(id);
+            var serviceResult = _categoriesService.GetCategoryForEdit(id);
             if (!serviceResult.IsSuccessfull)
             {
                 return RedirectToAction("Index");
@@ -118,7 +118,12 @@ namespace Haidelberg.Vehicles.WebApp.Controllers
             if (!serviceResult.IsSuccessfull)
             {
                 ViewBag.Errors = serviceResult.Errors;
-                return View(request);
+                var model = new GetCategoryForEditResponse
+                {
+                    Id = request.Id,
+                    Name = request.Name
+                };
+                return View(model);
             }
 
             return RedirectToAction("Details", new { Id = id });
