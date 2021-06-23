@@ -5,6 +5,9 @@ namespace Haidelberg.Vehicles.DataAccess.EF
 {
     public class User : IdentityUser
     {
+        public User() { }
+        public User(string username) => UserName = username;
+
         public int? EmployeeId { get; set; }
 
         [ForeignKey("EmployeeId")]

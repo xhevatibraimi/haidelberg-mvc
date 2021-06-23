@@ -8,6 +8,8 @@ using Haidelberg.Vehicles.DataAccess.EF;
 using Haidelberg.Vehicles.DataLayer;
 using Haidelberg.Vehicles.BusinessLayer;
 using Haidelberg.Vehicles.BusinessLayer.Abstractions;
+using Microsoft.AspNetCore.Identity;
+using System;
 
 namespace Haidelberg.Vehicles.WebApp
 {
@@ -34,6 +36,41 @@ namespace Haidelberg.Vehicles.WebApp
 
             // Register DbContext
             services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(Configuration["ConnectionString"]));
+                services.AddIdentity<User,IdentityRole<string>>()
+                .AddEntityFrameworkStores<DatabaseContext>()
+                .AddDefaultTokenProviders();
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Password settings.
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequiredLength = 1;
+                options.Password.RequiredUniqueChars = 1;
+
+                // Lockout settings.
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                options.Lockout.MaxFailedAccessAttempts = 100;
+                options.Lockout.AllowedForNewUsers = true;
+
+                // User settings.
+                options.User.AllowedUserNameCharacters =
+                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+                options.User.RequireUniqueEmail = false;
+            });
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                // Cookie settings
+                options.Cookie.HttpOnly = true;
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+
+                options.LoginPath = "/identity/login";
+                options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+                options.SlidingExpiration = true;
+            });
+
             services.AddControllersWithViews();
         }
 
@@ -49,11 +86,9 @@ namespace Haidelberg.Vehicles.WebApp
             }
 
             app.UseStaticFiles();
-
-            app.UseRouting();
-
+            app.UseRouting();            
+            app.UseAuthentication();
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

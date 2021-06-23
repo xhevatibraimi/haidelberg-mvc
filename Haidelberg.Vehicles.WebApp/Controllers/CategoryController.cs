@@ -2,10 +2,12 @@
 using Haidelberg.Vehicles.BusinessLayer.Abstractions.Requests;
 using Haidelberg.Vehicles.BusinessLayer.Abstractions.Responses;
 using Haidelberg.Vehicles.DataAccess.EF;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Haidelberg.Vehicles.WebApp.Controllers
 {
+    [Authorize]
     public class CategoryController : Controller
     {
         private readonly ICategoriesService _categoriesService;

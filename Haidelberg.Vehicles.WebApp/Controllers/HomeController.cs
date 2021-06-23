@@ -13,6 +13,7 @@ namespace Haidelberg.Vehicles.WebApp.Controllers
     {
         public IActionResult Index()
         {
+            var context = HttpContext;
             return View();
         }
 
