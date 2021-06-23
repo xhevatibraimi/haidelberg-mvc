@@ -1,0 +1,36 @@
+﻿@model GetAllRolesResponse
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a href="/roles/create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Name:
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Roles)
+        {
+            <tr>
+                <td>
+                    @item.Name
+                </td>
+                <td>
+                    <form action="/roles/delete/@item.Id" method="post">
+                        <input class="btn btn-danger" type="submit" value="Delete" />
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

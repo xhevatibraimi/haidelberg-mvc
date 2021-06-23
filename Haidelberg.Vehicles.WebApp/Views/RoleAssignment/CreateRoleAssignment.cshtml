@@ -1,0 +1,25 @@
+﻿@model GetCreateRoleAssignmentScreenVM
+
+<form action="/roleassignment/createroleassignment" method="post" autocomplete="off">
+    
+    <div class="form-group">
+        <label for="userid">User</label>
+        <select id="userid" name="UserId">
+            @foreach (var user in Model.Users)
+            {
+                <option value="@user.Id">@user.Username</option>
+            }
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="roleid">Role</label>
+        <select id="roleid" name="RoleName">
+            @foreach (var role in Model.Roles)
+            {
+                <option value="@role.Name">@role.Name</option>
+            }
+        </select>
+    </div>
+    <input type="submit" value="Assign" class="btn btn-success" />
+</form>
