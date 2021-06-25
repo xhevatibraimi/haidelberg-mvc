@@ -25,6 +25,9 @@ namespace Haidelberg.Vehicles.WebApp
         public void ConfigureServices(IServiceCollection services)
         {
             // Register Services
+            services.AddSingleton<IService, Service>();
+            //services.AddTransient<IService, Service>();
+            //services.AddScoped<IService, Service>();
             services.AddTransient<ICategoriesService, CategoriesService>();
             //services.AddTransient<ICategoriesService, SqlCategoriesService>();
             //services.AddTransient<ICategoriesService, MongoCategoriesService>();
