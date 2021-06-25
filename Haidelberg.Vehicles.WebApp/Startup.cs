@@ -30,7 +30,7 @@ namespace Haidelberg.Vehicles.WebApp
             //services.AddTransient<ICategoriesService, MongoCategoriesService>();
             services.AddTransient<VehiclesService>();
             services.AddTransient<IRolesService, RolesService>();
-
+            
             // Register Repositories
             services.AddTransient<CategoryRepository>();
             services.AddTransient<VehicleRepository>();
