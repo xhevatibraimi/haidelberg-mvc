@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Haidelberg.Vehicles.DataLay
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Haidelberg.Vehicles.BusinessLayer", "Haidelberg.Vehicles.BusinessLayer\Haidelberg.Vehicles.BusinessLayer.csproj", "{5A662828-DAC1-4C47-9561-C6BECCF9B56B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Haidelberg.Vehicles.BusinessLayer.Abstractions", "Haidelberg.Vehicles.BusinessLayer.Abstractions\Haidelberg.Vehicles.BusinessLayer.Abstractions.csproj", "{44C3D44B-1265-4284-9866-7D94AFB3388C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Haidelberg.Vehicles.BusinessLayer.Abstractions", "Haidelberg.Vehicles.BusinessLayer.Abstractions\Haidelberg.Vehicles.BusinessLayer.Abstractions.csproj", "{44C3D44B-1265-4284-9866-7D94AFB3388C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DependencyInjection", "DependencyInjection\DependencyInjection.csproj", "{3677E949-60DD-48F1-8F66-B32629BD2E92}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{44C3D44B-1265-4284-9866-7D94AFB3388C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{44C3D44B-1265-4284-9866-7D94AFB3388C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{44C3D44B-1265-4284-9866-7D94AFB3388C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3677E949-60DD-48F1-8F66-B32629BD2E92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3677E949-60DD-48F1-8F66-B32629BD2E92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3677E949-60DD-48F1-8F66-B32629BD2E92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3677E949-60DD-48F1-8F66-B32629BD2E92}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
