@@ -56,7 +56,7 @@ namespace Haidelberg.Vehicles.BusinessLayer
                 _logger.LogInformation("Started fetching categories count from database");
                 sw.Start();
                 var count = _context.Categories.Count();
-                //throw new Exception("sql connection timeout");
+                throw new Exception("sql connection timeout");
                 sw.Stop();
                 _logger.LogInformation($"Finished fetching categories count from database in {sw.ElapsedMilliseconds}");
                 return count;

@@ -10,6 +10,7 @@ using Haidelberg.Vehicles.BusinessLayer;
 using Haidelberg.Vehicles.BusinessLayer.Abstractions;
 using Microsoft.AspNetCore.Identity;
 using System;
+using NLog.Extensions.Logging;
 
 namespace Haidelberg.Vehicles.WebApp
 {
@@ -24,6 +25,7 @@ namespace Haidelberg.Vehicles.WebApp
 
         public void ConfigureServices(IServiceCollection services)
         {
+            ConfigureLogging();
             // Register Services
             services.AddSingleton<IService, Service>();
             //services.AddTransient<IService, Service>();
@@ -76,6 +78,11 @@ namespace Haidelberg.Vehicles.WebApp
             });
 
             services.AddControllersWithViews();
+        }
+
+        private void ConfigureLogging()
+        {
+            NLog.LogManager.Configuration = new NLogLoggingConfiguration(Configuration.GetSection("NLog"));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
