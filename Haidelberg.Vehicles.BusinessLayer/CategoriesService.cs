@@ -4,42 +4,96 @@ using Haidelberg.Vehicles.BusinessLayer.Abstractions.Responses;
 using Haidelberg.Vehicles.DataAccess.EF;
 using Haidelberg.Vehicles.DataLayer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Haidelberg.Vehicles.BusinessLayer
 {
     public class CategoriesService : CategoryRepository, ICategoriesService
     {
-        public CategoriesService(DatabaseContext context)
+        private readonly ILogger<CategoriesService> _logger;
+        public CategoriesService(DatabaseContext context, ILogger<CategoriesService> logger)
             : base(context)
         {
+            _logger = logger;
         }
 
         public ServiceResult<GetAllCategoriesResponse> TryGetAllCategories(int skip = 0, int take = 10)
         {
             var response = new ServiceResult<GetAllCategoriesResponse>();
-            var categories = _context.Categories.Select(x => new GetAllCategoriesResponse.Category
+            try
             {
-                Id = x.Id,
-                Name = x.Name
-            })
-            .Skip(skip)
-            .Take(take)
-            .ToList();
-
-            var totalCategories = _context.Categories.Count();
-
-            response.IsSuccessfull = true;
-            response.Result = new GetAllCategoriesResponse
+                List<GetAllCategoriesResponse.Category> categories = GetCategories(skip, take);
+                int totalCategories = GetCategoriesCount();
+                response.IsSuccessfull = true;
+                response.Result = new GetAllCategoriesResponse
+                {
+                    Categories = categories,
+                    Count = categories.Count,
+                    Skip = skip,
+                    Take = take,
+                    Total = totalCategories
+                };
+                return response;
+            }
+            catch (Exception ex)
             {
-                Categories = categories,
-                Count = categories.Count,
-                Skip = skip,
-                Take = take,
-                Total = totalCategories
-            };
+                _logger.LogError(ex, "error happened while fetching categories count");
+                response.IsSuccessfull = false;
+                response.AddError("Server Error");
+                return response;
+            }
+        }
 
-            return response;
+        private int GetCategoriesCount()
+        {
+            try
+            {
+                var sw = new Stopwatch();
+                _logger.LogInformation("Started fetching categories count from database");
+                sw.Start();
+                var count = _context.Categories.Count();
+                //throw new Exception("sql connection timeout");
+                sw.Stop();
+                _logger.LogInformation($"Finished fetching categories count from database in {sw.ElapsedMilliseconds}");
+                return count;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error while fetching categories count from database");
+                throw;
+            }
+        }
+
+        private List<GetAllCategoriesResponse.Category> GetCategories(int skip, int take)
+        {
+            try
+            {
+                var sw = new Stopwatch();
+                _logger.LogInformation("Started fetching categories from database");
+                sw.Start();
+
+                var categories = _context.Categories.Select(x => new GetAllCategoriesResponse.Category
+                {
+                    Id = x.Id,
+                    Name = x.Name
+                })
+                    .Skip(skip)
+                    .Take(take)
+                    .ToList();
+
+                sw.Stop();
+                _logger.LogInformation($"Finished fetching categories from database in {sw.ElapsedMilliseconds}");
+                return categories;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "erorr while fetching categories from database");
+                throw;
+            }
         }
 
         public ServiceResult<CreateCategoryResponse> TryCreateCategory(CreateCategoryRequest request)

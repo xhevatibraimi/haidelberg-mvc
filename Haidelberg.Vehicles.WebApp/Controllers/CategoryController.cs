@@ -4,6 +4,8 @@ using Haidelberg.Vehicles.BusinessLayer.Abstractions.Responses;
 using Haidelberg.Vehicles.DataAccess.EF;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System;
 
 namespace Haidelberg.Vehicles.WebApp.Controllers
 {
@@ -11,10 +13,11 @@ namespace Haidelberg.Vehicles.WebApp.Controllers
     public class CategoryController : Controller
     {
         private readonly ICategoriesService _categoriesService;
-
-        public CategoryController(ICategoriesService categoriesService)
+        private readonly ILogger<CategoryController> _logger;
+        public CategoryController(ICategoriesService categoriesService, ILogger<CategoryController> logger)
         {
             _categoriesService = categoriesService;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -24,13 +27,24 @@ namespace Haidelberg.Vehicles.WebApp.Controllers
             //ViewData["Categories"] = "a,b,c,d,e";
             //TempData["Text"] = "hello from index";
             //return RedirectToAction("Redirect");
-            var serviceResult = _categoriesService.TryGetAllCategories();
-            if (serviceResult.IsSuccessfull)
+            try
             {
-                return View(serviceResult.Result);
-            }
+                var serviceResult = _categoriesService.TryGetAllCategories();
 
-            return RedirectToAction("Index", "Home");
+                if (serviceResult.IsSuccessfull)
+                {
+                    _logger.LogInformation("fetched successfull categories response");
+                    return View(serviceResult.Result);
+                }
+
+                _logger.LogWarning("fetched unsuccessful categories response");
+                return RedirectToAction("Index", "Home");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "error happened while fetching categories response");
+                throw;
+            }
         }
 
         [HttpGet]
