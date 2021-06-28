@@ -11,6 +11,7 @@ using Haidelberg.Vehicles.BusinessLayer.Abstractions;
 using Microsoft.AspNetCore.Identity;
 using System;
 using NLog.Extensions.Logging;
+using Haidelberg.Vehicles.WebApp.Infrastructure.Middlewares;
 
 namespace Haidelberg.Vehicles.WebApp
 {
@@ -26,6 +27,8 @@ namespace Haidelberg.Vehicles.WebApp
         public void ConfigureServices(IServiceCollection services)
         {
             ConfigureLogging();
+            // Register Middlewares
+            services.AddTransient<CorrelationIdMiddelware>();
             // Register Services
             services.AddSingleton<IService, Service>();
             //services.AddTransient<IService, Service>();
@@ -96,6 +99,7 @@ namespace Haidelberg.Vehicles.WebApp
                 app.UseExceptionHandler("/Home/Error");
             }
 
+            app.UseMiddleware<CorrelationIdMiddelware>();
             app.UseStaticFiles();
             app.UseRouting();            
             app.UseAuthentication();
