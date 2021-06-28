@@ -13,13 +13,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Haidelberg.Vehicles.Busines
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Haidelberg.Vehicles.BusinessLayer.Abstractions", "Haidelberg.Vehicles.BusinessLayer.Abstractions\Haidelberg.Vehicles.BusinessLayer.Abstractions.csproj", "{44C3D44B-1265-4284-9866-7D94AFB3388C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DependencyInjection", "DependencyInjection\DependencyInjection.csproj", "{3677E949-60DD-48F1-8F66-B32629BD2E92}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DependencyInjection", "DependencyInjection\DependencyInjection.csproj", "{3677E949-60DD-48F1-8F66-B32629BD2E92}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InversionOfControl", "InversionOfControl\InversionOfControl.csproj", "{461E4EB0-2192-42B3-B9E5-F3CAB25CDCD0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InversionOfControl", "InversionOfControl\InversionOfControl.csproj", "{461E4EB0-2192-42B3-B9E5-F3CAB25CDCD0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demos", "Demos", "{0C65DCEA-8732-4936-A180-92B1D9E5741C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{AF679C0E-C4F6-4E0C-8154-8F49C88F3C11}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoggingDemo", "LoggingDemo\LoggingDemo.csproj", "{5D317F58-F9F7-4774-8928-FC96B05C83F1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,6 +57,10 @@ Global
 		{461E4EB0-2192-42B3-B9E5-F3CAB25CDCD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{461E4EB0-2192-42B3-B9E5-F3CAB25CDCD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{461E4EB0-2192-42B3-B9E5-F3CAB25CDCD0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D317F58-F9F7-4774-8928-FC96B05C83F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D317F58-F9F7-4774-8928-FC96B05C83F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D317F58-F9F7-4774-8928-FC96B05C83F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D317F58-F9F7-4774-8928-FC96B05C83F1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -67,6 +73,7 @@ Global
 		{44C3D44B-1265-4284-9866-7D94AFB3388C} = {AF679C0E-C4F6-4E0C-8154-8F49C88F3C11}
 		{3677E949-60DD-48F1-8F66-B32629BD2E92} = {0C65DCEA-8732-4936-A180-92B1D9E5741C}
 		{461E4EB0-2192-42B3-B9E5-F3CAB25CDCD0} = {0C65DCEA-8732-4936-A180-92B1D9E5741C}
+		{5D317F58-F9F7-4774-8928-FC96B05C83F1} = {0C65DCEA-8732-4936-A180-92B1D9E5741C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {716E8460-B431-4869-9BEA-0913E7CEDD48}
