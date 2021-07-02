@@ -6,6 +6,10 @@ namespace Haidelberg.Vehicles.DataAccess.EF
 {
     public class DatabaseContext : IdentityDbContext<User, IdentityRole<string>, string>
     {
+        public DatabaseContext()
+        {
+
+        }
         public DatabaseContext(DbContextOptions<DatabaseContext> options)
             : base(options)
         {

@@ -101,39 +101,36 @@ namespace Haidelberg.Vehicles.BusinessLayer
             var result = new ServiceResult<CreateCategoryResponse>();
             if (request == null)
             {
-                result.Errors.Add("The category should not be null");
+                result.AddError("The category should not be null");
                 return result;
             }
 
             if (string.IsNullOrWhiteSpace(request.Name))
             {
-                result.Errors.Add("The category name should not be null, empty or whitespace");
+                result.AddError("The category name should not be null, empty or whitespace");
                 return result;
             }
 
             if (request.Name.Length > 5)
             {
-                result.Errors.Add("The category name should be from 1 to 5 characters long");
+                result.AddError("The category name should be from 1 to 5 characters long");
                 return result;
             }
 
             if (CategoryExists(request.Name))
             {
-                result.Errors.Add($"The category with name '{request.Name}' already exists");
+                result.AddError($"The category with name '{request.Name}' already exists");
                 return result;
             }
 
-            var newCategory = new Category
-            {
-                Name = request.Name
-            };
-            CreateCategory(newCategory);
+            var category = new Category { Name = request.Name };
+            CreateCategory(category);
 
             result.IsSuccessfull = true;
             result.Result = new CreateCategoryResponse
             {
-                Id = newCategory.Id,
-                Name = newCategory.Name
+                Id = category.Id,
+                Name = request.Name
             };
             return result;
         }
